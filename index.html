@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Benin Life - Odogwu</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',system-ui}
+body{background:#0b0f1a;color:#fff;height:100vh;overflow:hidden}
+.top{position:fixed;top:0;left:0;right:0;height:52px;background:#121a2e;display:flex;align-items:center;justify-content:space-between;padding:0 10px;z-index:1000;border-bottom:1px solid #1e2a4a}
+.top-left{display:flex;align-items:center;gap:8px;background:#1c294e;border-radius:20px;padding:6px 12px}
+.top-right{display:flex;align-items:center;gap:8px;background:#1c294e;border-radius:20px;padding:6px 12px}
+.badge{background:#2a3a65;padding:2px 8px;border-radius:12px;font-size:11px}
+.livecard{position:fixed;top:60px;left:10px;right:10px;background:#141d33;border-radius:16px;padding:10px;z-index:900;border:1px solid #223}
+.vote-row{display:flex;align-items:center;justify-content:space-between;margin:4px 0;font-size:12px}
+.bar{height:6px;background:#222;border-radius:4px;flex:1;margin:0 8px}
+.bar>div{height:100%;border-radius:4px}
+.content{position:absolute;top:0;bottom:68px;left:0;right:0;padding-top:52px;overflow:hidden}
+.scene{width:100%;height:100%;position:relative;background:radial-gradient(circle at 50% 30%,#1a274a 0%,#0b0f1a 70%)}
+.chatbox{position:absolute;bottom:84px;left:10px;right:10px;background:#fff;color:#000;border-radius:18px;padding:10px 12px;z-index:800}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:68px;background:#111827;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #222;z-index:1000}
+.bbtn{background:#1e293b;border:none;color:#889;padding:8px 18px;border-radius:14px;display:flex;flex-direction:column;align-items:center;font-size:10px}
+.bbtn.active{background:#fff;color:#000}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
+.box{background:#fff;color:#000;border-radius:18px;padding:16px;width:100%;max-width:380px}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:700;margin-top:8px}
+.btn-yellow{background:#ffcc00}
+.btn-dark{background:#111;color:#fff}
+.travel{background:#fff;color:#000;border-radius:18px;padding:14px;position:absolute;bottom:90px;left:10px;right:10px;z-index:850}
+.travel-row{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
+.tbtn{flex:0 0 64px;background:#f3f4f6;border-radius:14px;padding:8px;text-align:center;border:1px solid #ddd}
+.tbtn b{display:block;font-size:11px}
+.mapview{position:absolute;inset:0;background:#cfe8c8;display:none;z-index:700;overflow:auto;padding-top:60px}
+.map-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px}
+.loc{background:#fff;color:#000;border-radius:14px;padding:12px;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+@keyframes fall{to{transform:translateY(220px) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="top-left">🌙 11:54 PM <span style="background:#2a3a65;padding:2px 6px;border-radius:10px">🏠 H</span> 🔈 <span id="visits">35.2m visits</span></div>
+<div class="top-right">N<span id="money">10,594,208,743</span> <button style="background:#0f3;border:none;width:22px;height:22px;border-radius:50%">+</button></div>
+</div>
 
+<div style="position:fixed;top:52px;left:0;right:0;display:flex;gap:6px;padding:6px 10px;z-index:950;overflow-x:auto">
+<span style="background:#1c294e;padding:4px 10px;border-radius:20px;font-size:11px">🟢 <span id="online">56k online</span></span>
+<span style="background:#1c294e;padding:4px 10px;border-radius:20px;font-size:11px">Get a job - Open Phone→Jobs</span>
+<span style="background:#1c294e;padding:4px 10px;border-radius:20px;font-size:11px">Daily gem hunt</span>
+</div>
+
+<div class="content" id="mainContent">
+<div style="margin:60px 10px 0;background:#141d33;border-radius:16px;padding:10px;border:1px solid #223">
+<div style="display:flex;justify-content:space-between;font-size:11px;opacity:.7"><span>🔴 LIVE COUNT 15,359 votes - polls close in 6d 20h</span></div>
+<div class="vote-row"><span>@to.ibanksx</span><div class="bar"><div style="width:90%;background:#f5d000"></div></div><span>9,594</span></div>
+<div class="vote-row"><span>@Savage.ishin</span><div class="bar"><div style="width:60%;background:#ff8c00"></div></div><span>3,655</span></div>
+<div class="vote-row"><span>@dammyart1</span><div class="bar"><div style="width:50%;background:#00bfff"></div></div><span>535</span></div>
+<div style="text-align:center;margin-top:6px"><button class="btn" style="padding:8px;background:#2a3a65;color:#fff;width:auto;font-size:12px">⭐ Cast your vote</button></div>
+</div>
+
+<div style="display:flex;justify-content:center;margin-top:20px">
+<svg viewBox="0 0 400 280" style="width:340px;height:280px">
+<path d="M 40 180 L 180 100 L 320 180 L 180 260 Z" fill="#e8a0a8" stroke="#000" stroke-width="2"/>
+<path d="M 40 180 L 40 100 L 180 20 L 180 100 Z" fill="#d8b4c4" stroke="#000"/>
+<path d="M 180 100 L 180 20 L 320 100 L 320 180 Z" fill="#c49ab0" stroke="#000"/>
+<rect x="70" y="120" width="40" height="30" fill="#333"/><rect x="150" y="60" width="20" height="50" fill="#5a3"/>
+</svg>
+</div>
+
+<div class="travel">
+<div style="display:flex;justify-content:space-between"><b>Home - Ring Road, Benin</b><span style="opacity:.5;font-size:11px">Banana Island style</span></div>
+<div class="travel-row">
+<div class="tbtn" onclick="goMap()"><div>🚶</div><b>Trek</b><span style="font-size:10px">Free</span></div>
+<div class="tbtn" onclick="travel('Keke')"><div>🛺</div><b>Keke</b><span style="font-size:10px">N500</span></div>
+<div class="tbtn" onclick="travel('Danfo')"><div>🚌</div><b>Danfo</b><span style="font-size:10px">N800</span></div>
+<div class="tbtn" onclick="travel('Okada')"><div>🏍️</div><b>Okada</b><span style="font-size:10px">N1,500</span></div>
+<div class="tbtn" onclick="travel('Cab')"><div>🚕</div><b>Cab</b><span style="font-size:10px">N4,000</span></div>
+<div class="tbtn" onclick="travel('Heli')"><div>🚁</div><b>Heli</b><span style="font-size:10px">N20k</span></div>
+<div class="tbtn" onclick="travel('Jet')"><div>✈️</div><b>Jet</b><span style="font-size:10px">N50k</span></div>
+</div>
+<button class="btn btn-yellow" style="margin-top:10px" onclick="goMap()">Go - Free</button>
+</div>
+
+<div class="chatbox">
+<div style="display:flex;gap:8px;align-items:center"><img src="https://i.pravatar.cc/30" style="border-radius:50%"><b>Polling Unit - Ring Road</b><span style="font-size:10px;background:#eef;padding:2px 6px;border-radius:10px">Your vote is yo...</span></div>
+<div style="margin-top:6px;font-size:12px;opacity:.6">Say something out loud...</div>
+<div style="display:flex;gap:10px;margin-top:6px;font-size:11px"><span>🗳️ Voting cubicle</span><span>🪑 Accreditation desk</span></div>
+</div>
+</div>
+
+<div class="mapview" id="mapView">
+<div style="padding:10px"><b>Benin Map - Like Lagos Life</b><br><small>Trek to any place, encounter Iya Agbo</small></div>
+<div class="map-grid">
+<div class="loc" onclick="enter('Oba Market')"><b>🛒 Oba Market</b><br><small>Buy Ankara, hustle</small></div>
+<div class="loc" onclick="enter('Benin Airport')"><b>✈️ Benin Airport</b><br><small>Private Jet & Heli</small></div>
+<div class="loc" onclick="enter('Kada Plaza')"><b>🎬 Kada Plaza</b><br><small>Watch film</small></div>
+<div class="loc" onclick="enter('Ogba Zoo Yacht')"><b>🛥️ Ogba Yacht</b><br><small>Luxury Yacht</small></div>
+<div class="loc" onclick="enter('UNIBEN')"><b>🎓 UNIBEN</b><br><small>School</small></div>
+<div class="loc" onclick="enter('Quilox Benin')"><b>🎉 Quilox Benin</b><br><small>Spray money - like video</small></div>
+<div class="loc" onclick="enter('Ring Road')"><b>📍 Ring Road</b><br><small>Home</small></div>
+<div class="loc" onclick="enter('GRA')"><b>🏘️ GRA</b><br><small>Rich man area</small></div>
+</div>
+</div>
+
+<div class="bottom">
+<button class="bbtn active"><span style="font-size:18px">🏠</span>Home</button>
+<button class="bbtn" onclick="alert('🛒 Garage: G-Wagon, Heli N500k, Jet N1.2M, Yacht')"><span style="font-size:18px">🛒</span>Buy</button>
+<button class="bbtn" onclick="toggleMap()"><span style="font-size:18px">🗺️</span>Map</button>
+<button class="bbtn" onclick="alert('📱 Phone: Jobs, Crypto, Bolt')"><span style="font-size:18px">📱</span>Phone</button>
+</div>
+
+<div class="modal" id="eventModal">
+<div class="box">
+<div style="text-align:center;font-size:40px">🌿</div>
+<h3 style="text-align:center">Iya Agbo by the road</h3>
+<p style="font-size:13px;margin-top:8px;text-align:center">Iya Agbo sees you dragging your feet. "Ah, typhoid don catch you? Come, drink this one. N600 only, e go clear am."</p>
+<button class="btn btn-yellow" onclick="buyAgbo()">Buy agbo (N400) - Bitter but it works</button>
+<button class="btn btn-dark" onclick="closeModal()">No, thank you ma - Keep walking</button>
+</div>
+</div>
+
+<div class="modal" id="clubModal">
+<div class="box" style="max-width:90%;background:#0b0b0b;color:#fff;text-align:center">
+<h2 style="color:#ffcc00">TOP SHELF ON @teekay01!</h2>
+<p>@teekay01 just bought the whole club a N100m top-shelf round! Cheers 🥂</p>
+<div id="moneyRain" style="position:relative;height:200px;overflow:hidden"></div>
+<button class="btn btn-yellow" onclick="closeModal()">💃 Dance Floor</button>
+</div>
+</div>
+
+<script>
+let money=10594209343;
+function updateMoney(){document.getElementById('money').innerText=money.toLocaleString()}
+function goMap(){document.getElementById('mapView').style.display='block'}
+function toggleMap(){let m=document.getElementById('mapView');m.style.display=m.style.display==='block'?'none':'block'}
+function travel(type){
+ let cost={Keke:500,Danfo:800,Okada:1500,Cab:4000,Heli:20000,Jet:50000}[type]||0;
+ if(money<cost){alert('Money no reach');return}
+ money-=cost;updateMoney();
+ goMap();
+ setTimeout(()=>{if(Math.random()<0.7) document.getElementById('eventModal').style.display='flex'},800);
+}
+function enter(place){
+ if(place.includes('Quilox')){document.getElementById('clubModal').style.display='flex'; sprayMoney(); return}
+ alert('You enter '+place);
+ if(Math.random()<0.4) document.getElementById('eventModal').style.display='flex';
+}
+function closeModal(){document.querySelectorAll('.modal').forEach(e=>e.style.display='none')}
+function buyAgbo(){if(money>=400){money-=400;updateMoney();closeModal();setTimeout(()=>{alert('🌿 The agbo eased it. The typhoid is mild now.');money-=600;updateMoney()},500)}}
+function sprayMoney(){
+ let cont=document.getElementById('moneyRain');cont.innerHTML='';
+ for(let i=0;i<20;i++){let d=document.createElement('div');d.innerText='💵';d.style.position='absolute';d.style.left=Math.random()*100+'%';d.style.top='-20px';d.style.animation=`fall ${1+Math.random()}s linear`;cont.appendChild(d)}
+}
+updateMoney();
+setInterval(()=>{document.getElementById('visits').innerText=(35.2+Math.random()*0.1).toFixed(1)+'m visits';document.getElementById('online').innerText=(50+Math.floor(Math.random()*10))+'k online'},3000);
+</script>
+</body>
+</html>
